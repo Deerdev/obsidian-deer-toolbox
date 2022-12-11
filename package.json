@@ -2,12 +2,16 @@
   "name": "obsidian-deer-toolbox",
   "version": "1.0.0",
   "description": "This is a sample plugin for Obsidian (https://obsidian.md)",
-  "main": "build/main.js",
+  "main": "main.js",
   "files": [
     "pkg/*",
     "main.js",
     "manifest.json",
     "styles.css"
+  ],
+  "moduleFileExtensions": [
+    "js",
+    "ts"
   ],
   "scripts": {
     "dev": "rollup --config rollup.config.js -w",
