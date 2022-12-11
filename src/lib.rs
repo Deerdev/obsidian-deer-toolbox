@@ -39,9 +39,6 @@ extern "C" {
     #[wasm_bindgen(method, structural, js_class = "DeerToolboxPlugin")]
     pub fn getActiveFileContent(this: &DeerToolboxPlugin) -> JsValue;
 
-    // #[wasm_bindgen(method, getter)]
-    // pub fn mediaPath(this: &DeerToolboxPlugin) -> String;
-
     #[wasm_bindgen(method, structural, js_class = "DeerToolboxPlugin")]
     pub fn saveBinaryResource(
         this: &DeerToolboxPlugin,
@@ -56,36 +53,6 @@ extern "C" {
 macro_rules! console_log {
     ($($t:tt)*) => (log(&format_args!($($t)*).to_string()))
 }
-#[wasm_bindgen]
-pub fn test_log(plugin: &DeerToolboxPlugin) {
-    console_log!("I'm in...")
-}
-
-#[wasm_bindgen]
-pub fn process_web_image(plugin: &DeerToolboxPlugin) {
-    plugin.displayError("123".to_string(), None);
-}
-
-#[wasm_bindgen]
-pub async fn process_web_content(plugin: &str) -> Result<JsValue, JsValue> {
-    // plugin.displayError("123".to_string(), None);
-    console_log!("{plugin}");
-    Ok(JsValue::from_str("456"))
-    // future_to_promise(process_web_image_from_content(plugin))
-}
-
-// #[wasm_bindgen]
-// pub fn process_web_content2(plugin: &DeerToolboxPlugin) -> Promise {
-//     plugin.displayError("123".to_string(), None);
-//     future_to_promise(process_web_image_from_content2(plugin))
-// }
-
-// pub async fn process_web_image_from_content2(
-//     plugin: &DeerToolboxPlugin,
-// ) -> Result<JsValue, JsValue> {
-//     plugin.displayError("4455".to_string(), None);
-//     Ok(JsValue::from_str("4455"))
-// }
 
 #[wasm_bindgen]
 pub async fn process_web_image_from_content(
@@ -110,17 +77,14 @@ pub async fn process_web_image_from_content(
         let url = cap.get(2).unwrap().as_str();
         url_list.push(url);
     }
-    console_log!("url_list: {:?}", url_list);
     let url_uuid_map = handle_imge_processing(plugin, url_list).await?;
     let replaced_content = re.replace_all(&content, |caps: &regex::Captures| {
         let anchor = caps.get(1).unwrap().as_str();
         let url = caps.get(2).unwrap().as_str();
         let uuid = url_uuid_map.get(url).unwrap();
-        console_log!("![{}]({})", anchor, uuid);
         format!("![{}]({})", anchor, uuid)
     });
     console_log!("before replaced_content");
-    console_log!("{replaced_content}");
 
     result_promise = plugin.saveFileContent(replaced_content.as_ref());
     promise = js_sys::Promise::from(result_promise);
@@ -130,7 +94,6 @@ pub async fn process_web_image_from_content(
         return Err(e);
     }
 
-    // let Ok(content_js_value) = result;
     console_log!("after replaced_content");
     Ok(JsValue::UNDEFINED)
 }
