@@ -10,7 +10,7 @@ import {
   TFile,
 } from "obsidian";
 import DeerBasePlugin from "./base_plugin";
-import { process_web_image_from_content } from "../pkg/obsidian_deer_toolbox";
+import {process_web_image_from_content, freeStackObject, initWithBuf} from "./wasm_polyfill"
 
 interface MyPluginSettings {
   mediaRootPath: string;
@@ -24,7 +24,16 @@ export default class DeerToolboxPlugin extends DeerBasePlugin {
   settings: MyPluginSettings;
 
   downloadWebImages = async () => {
-    await process_web_image_from_content(this);
+    const that = this;
+    console.log('1122');
+    const content = await this.app.vault.adapter.readBinary(".obsidian/plugins/obsidian-deer-toolbox/pkg/obsidian_deer_toolbox_wasm_bg.wasm");
+    await initWithBuf(content);
+    try {
+      await process_web_image_from_content(that);
+    } finally {
+      freeStackObject();
+    }
+    console.log("### finished")
   };
 
   async onload() {
@@ -53,7 +62,7 @@ export default class DeerToolboxPlugin extends DeerBasePlugin {
     }
   }
 
-  get mediaPath(): string {
+  mediaPath(): string {
     return this.settings.mediaRootPath;
   }
 

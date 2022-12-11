@@ -1,5 +1,5 @@
 [package]
-name = "obsidian-deer-toolbox"
+name = "obsidian-deer-toolbox-wasm"
 version = "0.1.0"
 authors = ["deerdev <daoquanlu@gmail.com>"]
 edition = "2018"

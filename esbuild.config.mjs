@@ -1,7 +1,7 @@
 import esbuild from "esbuild";
 import process from "process";
 import builtins from 'builtin-modules'
-import watPlugin from 'esbuild-plugin-wat';
+import wasmLoader from 'esbuild-plugin-wasm';
 
 const banner =
   `/*
@@ -13,9 +13,7 @@ if you want to view the source, please visit the github repository of this plugi
 const prod = (process.argv[2] === 'production');
 
 esbuild.build({
-  plugins: [watPlugin({
-    bundle: false
-  })],
+  plugins: [wasmLoader()],
   banner: {
     js: banner,
   },
@@ -42,6 +40,5 @@ esbuild.build({
   logLevel: "info",
   sourcemap: prod ? false : 'inline',
   treeShaking: true,
-  outdir: './',
   outfile: 'main.js',
 }).catch(() => process.exit(1));

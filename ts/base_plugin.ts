@@ -18,16 +18,21 @@ export default class DeerBasePlugin extends Plugin {
   }
 
   async getActiveFileContent(): Promise<string> {
+    console.log("test")
     const file = this.getActiveFile();
     if (!file) {
       this.displayError("No active file");
       return "";
     }
     this.file = file;
-    return await this.app.vault.cachedRead(file);
+    console.log(file);
+    const content = await this.app.vault.cachedRead(file);
+    console.log("read")
+    return content
   }
 
-  async saveFileContent(content: string) {
+  async saveFileContent(content: string): Promise<void>{
+    console.log("inboke saveFileContent")
     if (!this.file) {
       return
     }
