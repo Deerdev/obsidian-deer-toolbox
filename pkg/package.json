@@ -1,0 +1,15 @@
+{
+  "name": "obsidian-deer-toolbox-wasm",
+  "collaborators": [
+    "deerdev <daoquanlu@gmail.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "obsidian_deer_toolbox_wasm_bg.wasm",
+    "obsidian_deer_toolbox_wasm.js",
+    "obsidian_deer_toolbox_wasm.d.ts"
+  ],
+  "module": "obsidian_deer_toolbox_wasm.js",
+  "types": "obsidian_deer_toolbox_wasm.d.ts",
+  "sideEffects": false
+}
